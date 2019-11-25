@@ -15,9 +15,16 @@ class Homepage extends React.Component{
                 <h3>Here are the tasks:</h3>
                 <h4>Unchecked:</h4>
                 {this.props.root.map((item,index)=>{
-                    return <p key={index}>{item.data}</p>
+                    if(item.isChecked===0)
+                        return (<div><span key={index}>{item.data}</span><input type='checkbox' onClick={()=>this.props.changeCheck(item.insertionId)}></input></div>)
+                    return '';
                 })}
                 <h4>Checked:</h4>
+                {this.props.root.map((item,index)=>{
+                    if(item.isChecked===1)
+                        return (<div><span key={index}>{item.data}</span><input type='checkbox' checked="checked" onClick={()=>this.props.changeCheckR(item.insertionId)}></input></div>)
+                    return '';
+                })}
             </div>
         )
     }
@@ -28,7 +35,9 @@ const matchStatetoProps = (state) =>{
 
 const dispatchStatetoProps = (dispatch) =>{
     return{
-        fetchtsk:()=> dispatch(fetchTasks)
+        fetchtsk:()=> dispatch(fetchTasks),
+        changeCheck: (insertionId)=> dispatch({type:'CHANGECHK',payload:insertionId}),
+        changeCheckR: (insertionId)=> dispatch({type:'CHANGECHKR',payload:insertionId})
     }
 }
 
